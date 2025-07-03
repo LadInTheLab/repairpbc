@@ -4,6 +4,9 @@ on:
   release:
     types: [published]
 
+permissions:
+  contents: write
+
 jobs:
   build:
     runs-on: ${{ matrix.os }}
@@ -32,21 +35,11 @@ jobs:
         pyinstaller --onefile --name=repairpbc --distpath=./dist --clean --noconfirm repair_pbc.py
 
     - name: Upload executable to release
-      uses: actions/upload-release-asset@v1
+      uses: actions/upload-release-asset@v2
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ github.event.release.upload_url }}
         asset_path: ./dist/repairpbc${{ matrix.os == 'windows-latest' && '.exe' || '' }}
         asset_name: repairpbc-${{ matrix.os == 'windows-latest' && 'windows' || matrix.os == 'macos-latest' && 'macos' || 'linux' }}${{ matrix.os == 'windows-latest' && '.exe' || '' }}
-        asset_content_type: ${{ matrix.os == 'windows-latest' && 'application/octet-stream' || 'application/executable' }}
-
-    - name: Upload source distribution
-      uses: actions/upload-release-asset@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        upload_url: ${{ github.event.release.upload_url }}
-        asset_path: ./dist/
-        asset_name: repairpbc-source-${{ github.run_number }}.zip
-        asset_content_type: application/zip 
+        asset_content_type: ${{ matrix.os == 'windows-latest' && 'application/octet-stream' || 'application/executable' }} 

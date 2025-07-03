@@ -23,7 +23,7 @@ setup(
     description="A tool to repair periodic boundary conditions in GROMACS trajectory files",
     long_description=read_readme(),
     long_description_content_type="text/markdown",
-    url="https://github.com/andrewbrodrick/repairpbc",
+    url="https://github.com/LadInTheLab/repairpbc",
     packages=find_packages(),
     classifiers=[
         "Development Status :: 4 - Beta",
