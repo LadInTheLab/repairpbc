@@ -33,13 +33,17 @@ jobs:
     - name: Build executable
       run: |
         pyinstaller --onefile --name=repairpbc --distpath=./dist --clean --noconfirm repair_pbc.py
+        
+    - name: Fix macOS permissions
+      if: matrix.os == 'macos-latest'
+      run: |
+        xattr -cr ./dist/repairpbc
+        chmod +x ./dist/repairpbc
 
     - name: Upload executable to release
-      uses: actions/upload-release-asset@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      uses: softprops/action-gh-release@v1
       with:
-        upload_url: ${{ github.event.release.upload_url }}
-        asset_path: ./dist/repairpbc${{ matrix.os == 'windows-latest' && '.exe' || '' }}
-        asset_name: repairpbc-${{ matrix.os == 'windows-latest' && 'windows' || matrix.os == 'macos-latest' && 'macos' || 'linux' }}${{ matrix.os == 'windows-latest' && '.exe' || '' }}
-        asset_content_type: ${{ matrix.os == 'windows-latest' && 'application/octet-stream' || 'application/executable' }} 
+        files: ./dist/repairpbc${{ matrix.os == 'windows-latest' && '.exe' || '' }}
+        tag_name: ${{ github.ref_name }}
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
