@@ -35,7 +35,7 @@ jobs:
         pyinstaller --onefile --name=repairpbc --distpath=./dist --clean --noconfirm repair_pbc.py
 
     - name: Upload executable to release
-      uses: actions/upload-release-asset@v2
+      uses: actions/upload-release-asset@v1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
