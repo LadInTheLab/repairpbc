@@ -40,10 +40,20 @@ jobs:
         xattr -cr ./dist/repairpbc
         chmod +x ./dist/repairpbc
 
+    - name: Rename executable for platform
+      run: |
+        if [ "${{ matrix.os }}" = "windows-latest" ]; then
+          mv ./dist/repairpbc.exe ./dist/repairpbc-windows.exe
+        elif [ "${{ matrix.os }}" = "macos-latest" ]; then
+          mv ./dist/repairpbc ./dist/repairpbc-macos
+        else
+          mv ./dist/repairpbc ./dist/repairpbc-linux
+        fi
+
     - name: Upload executable to release
       uses: softprops/action-gh-release@v1
       with:
-        files: ./dist/repairpbc${{ matrix.os == 'windows-latest' && '.exe' || '' }}
+        files: ./dist/repairpbc-${{ matrix.os == 'windows-latest' && 'windows' || matrix.os == 'macos-latest' && 'macos' || 'linux' }}${{ matrix.os == 'windows-latest' && '.exe' || '' }}
         tag_name: ${{ github.ref_name }}
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
