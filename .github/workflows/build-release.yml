@@ -41,6 +41,7 @@ jobs:
         chmod +x ./dist/repairpbc
 
     - name: Rename executable for platform
+      shell: bash
       run: |
         if [ "${{ matrix.os }}" = "windows-latest" ]; then
           mv ./dist/repairpbc.exe ./dist/repairpbc-windows.exe

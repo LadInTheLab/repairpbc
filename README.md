@@ -3,7 +3,7 @@
 A command-line tool to repair periodic boundary conditions (PBC) in GROMACS trajectory files (.xtc) using their associated topology files (.gro).
 
 ## What it does
-
+GROMACS simulations typically employ periodic boundary conditions (PBC) to constrain simulation box size. This means that if atom positions are extracted from the trajectories directly, proteins may appear "broken" if they cross outside the box boundary and "jump" across to the other side of the simulation box. 
 This tool analyzes GROMACS trajectory files and corrects atoms that have "jumped" across periodic boundaries during molecular dynamics simulations. It uses an efficient array-based algorithm to identify and correct these jumps, ensuring your protein structure remains continuous throughout the trajectory.
 
 ## Important Limitation
@@ -14,7 +14,7 @@ This tool only works with single, contiguous protein chains. It will automatical
 - Non-contiguous protein segments (gaps in residue numbering)
 - Complex protein systems with multiple chains or domains
 
-The algorithm assumes atoms are sequentially ordered in a single polypeptide chain. Using it on multi-chain systems will produce incorrect results.
+The algorithm assumes atoms are sequentially ordered in a single polypeptide chain. Using it on multi-chain systems will either throw an error or produce incorrect results.
 
 ## Installation
 
@@ -29,7 +29,7 @@ For users who want to run the tool without installing Python or dependencies:
 3. Make it executable (Linux/macOS): `chmod +x repairpbc-macos`
 4. Run: `./repairpbc-macos -t trajectory.xtc -p topology.gro -o output.xtc`
 
-**Note**: Executables are approximately 150-200MB due to included dependencies.
+**Note**: Executables are approximately 80MB due to included dependencies.
 
 ### Option 2: Python Package (Recommended for Developers)
 For users comfortable with Python or who want to modify the code:
@@ -96,8 +96,7 @@ python repair_pbc.py -t simulation.xtc -p structure.gro -o repaired.npy --output
 1. Validates input files to ensure a single, contiguous protein chain.
 2. Loads your .gro topology file and .xtc trajectory file.
 3. Identifies protein atoms (amino acids only).
-4. Tests for periodic boundary condition "jumps" by ensuring that no box-sized translations of the atoms result in the
-atom *reduce* inter-atomic distance - if they do, they are applied and propagated to downstream atoms. 
+4. Tests for periodic boundary condition "jumps" by ensuring that no box-sized translations of the atoms *reduce* inter-atomic distance - if they do, they are applied and propagated to downstream atoms. 
 
 
 ## Validation
