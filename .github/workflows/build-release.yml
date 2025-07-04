@@ -32,7 +32,7 @@ jobs:
 
     - name: Build executable
       run: |
-        pyinstaller --onefile --name=repairpbc --distpath=./dist --clean --noconfirm repair_pbc.py
+        pyinstaller --onefile --name=repairpbc --distpath=./dist --clean --noconfirm --hidden-import=numpy --hidden-import=pandas --hidden-import=mdtraj --hidden-import=mdtraj.formats.xtc --hidden-import=mdtraj.formats.gro --hidden-import=mdtraj.formats.pdb --collect-all mdtraj --exclude-module matplotlib --exclude-module tkinter repair_pbc.py
         
     - name: Fix macOS permissions
       if: matrix.os == 'macos-latest'
