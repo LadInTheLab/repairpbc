@@ -40,21 +40,42 @@ jobs:
         xattr -cr ./dist/repairpbc
         chmod +x ./dist/repairpbc
 
-    - name: Rename executable for platform
+    - name: Rename Windows executable
+      if: matrix.os == 'windows-latest'
       shell: bash
-      run: |
-        if [ "${{ matrix.os }}" = "windows-latest" ]; then
-          mv ./dist/repairpbc.exe ./dist/repairpbc-windows.exe
-        elif [ "${{ matrix.os }}" = "macos-latest" ]; then
-          mv ./dist/repairpbc ./dist/repairpbc-macos
-        else
-          mv ./dist/repairpbc ./dist/repairpbc-linux
-        fi
+      run: mv ./dist/repairpbc.exe ./dist/repairpbc-windows.exe
 
-    - name: Upload executable to release
+    - name: Rename macOS executable
+      if: matrix.os == 'macos-latest'
+      run: mv ./dist/repairpbc ./dist/repairpbc-macos
+
+    - name: Rename Linux executable
+      if: matrix.os == 'ubuntu-latest'
+      run: mv ./dist/repairpbc ./dist/repairpbc-linux
+
+    - name: Upload Windows executable
+      if: matrix.os == 'windows-latest'
       uses: softprops/action-gh-release@v1
       with:
-        files: ./dist/repairpbc-${{ matrix.os == 'windows-latest' && 'windows' || matrix.os == 'macos-latest' && 'macos' || 'linux' }}${{ matrix.os == 'windows-latest' && '.exe' || '' }}
+        files: ./dist/repairpbc-windows.exe
         tag_name: ${{ github.ref_name }}
       env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Upload macOS executable
+      if: matrix.os == 'macos-latest'
+      uses: softprops/action-gh-release@v1
+      with:
+        files: ./dist/repairpbc-macos
+        tag_name: ${{ github.ref_name }}
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Upload Linux executable
+      if: matrix.os == 'ubuntu-latest'
+      uses: softprops/action-gh-release@v1
+      with:
+        files: ./dist/repairpbc-linux
+        tag_name: ${{ github.ref_name }}
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
