@@ -308,7 +308,7 @@ def xtc2df(xtc_path, topology_path, verbose=True):
         selected_trajectories = np.swapaxes(selected_trajectories, 0, 1)
         
         if verbose:
-            print(f"Trajectory loaded: {trajectory_object.n_frames} frames, {selected_trajectories.shape[1]} protein atoms")
+            print(f"Trajectory loaded: {trajectory_object.n_frames} frames, {selected_trajectories.shape[0]} protein atoms")
         
         return selected_trajectories, structure_topology_df, box_dims
         
