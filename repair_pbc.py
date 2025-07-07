@@ -471,7 +471,7 @@ def write_gro_file_protein_only(topology_path, output_gro_path, protein_indices,
         print(f"Wrote new .gro file with only protein atoms: {output_gro_path}")
 
 
-def save_trajectory(corrected_trajectory, output_path, topology_path, trajectory_path, output_mode='full', output_format=None, verbose=True):
+def save_trajectory(corrected_trajectory, output_path, topology_path, trajectory_path, output_mode='protein-only', output_format=None, verbose=True):
     """Save corrected trajectory in the specified mode."""
     if verbose:
         if output_mode == 'full':
