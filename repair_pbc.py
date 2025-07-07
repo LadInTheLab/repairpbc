@@ -55,7 +55,7 @@ def validate_file_path(file_path, file_type, must_exist=True):
     return path
 
 
-def validate_output_path(output_path, output_mode='full', output_format=None):
+def validate_output_path(output_path, output_mode='protein-only', output_format=None):
     """Validate output file path and ensure directory exists."""
     if not output_path:
         raise RepairPBCError("Output file path cannot be empty")
@@ -644,8 +644,8 @@ Examples:
     parser.add_argument(
         '--output-mode',
         choices=['full', 'protein-only', 'custom-format'],
-        default='full',
-        help='Output mode: full (default, overwrite only protein atoms in full trajectory), protein-only (output only protein atoms), custom-format (output in another format)'
+        default='protein-only',
+        help='Output mode: full (overwrite only protein atoms in full trajectory), protein-only (default, output only protein atoms), custom-format (output in another format)'
     )
     
     parser.add_argument(

@@ -5,6 +5,7 @@ A command-line tool to repair periodic boundary conditions (PBC) in GROMACS traj
 ## What it does
 GROMACS simulations typically employ periodic boundary conditions (PBC) to constrain simulation box size. This means that if atom positions are extracted from the trajectories directly, proteins may appear "broken" if they cross outside the box boundary and "jump" across to the other side of the simulation box. 
 This tool analyzes GROMACS trajectory files and corrects atoms that have "jumped" across periodic boundaries during molecular dynamics simulations. It uses an efficient array-based algorithm to identify and correct these jumps, ensuring your protein structure remains continuous throughout the trajectory.
+The .gro and .xtc files this tool produces are valid and can be viewed with VMD or other tools capable of reading GROMACS trajectories. 
 
 ## Important Limitation
 
@@ -76,11 +77,11 @@ python repair_pbc.py -t simulation.xtc -p structure.gro -o repaired.npy --output
 
 ## Output Modes
 
-- `full` (default):  
-  Overwrites only the protein atom positions in the full trajectory. All other atoms (water, ions, ligands) are left unchanged. This may result in physically invalid structures (overlaps, broken waters, etc.). Use this mode if you want to keep the original atom count and topology, but be aware of the risks.
-
-- `protein-only`:  
+- `protein-only` (default):  
   Outputs a new `.xtc` and `.gro` file containing only the protein atoms. All other atoms are removed. This is the safest mode for analysis or visualization of just the protein. The resulting files cannot be used for full-system MD restarts.
+
+- `full`:  
+  Overwrites only the protein atom positions in the full trajectory. All other atoms (water, ions, ligands) are left unchanged. This may result in physically invalid structures (overlaps, broken waters, etc.). Use this mode if you want to keep the original atom count and topology, but be aware of the risks.
 
 - `custom-format`:  
   Outputs only the corrected protein coordinates in a user-specified format. Use the `--output-format` option to choose the format: `xtc`, `pdb`, `xyz`, or `npy`. This is useful for downstream analysis or visualization in other tools.
