@@ -203,7 +203,7 @@ def validate_trajectory_compatibility(trajectory_array, topology_df, verbose=Tru
         )
     
     if verbose:
-        print(f"✓ Trajectory compatibility validated: {n_atoms_traj} atoms, {trajectory_array.shape[1]} frames")
+        print(f"Trajectory compatibility validated: {n_atoms_traj} atoms, {trajectory_array.shape[1]} frames")
     
     return True
 
